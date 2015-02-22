@@ -11,5 +11,8 @@ def test_dot_product():
 def test_probability_of_feature():
     "Given list of lists, the probability of feature1 is calculated"
     "['feature1', 'feature2']"
-    data = [[1,0],[0,0]]
+    data = [
+        [[1,0], True],
+        [[0,0], False]
+    ]
     expect(probability_of_feature(data, 0)).to.equal(0.5)
