@@ -77,4 +77,6 @@ def test_compute_training_weights():
         [[0, 1], False]
     ]
     expected_weights = [1.0, 0.0]
-    expect(compute_training_weights(data, True)).to.equal(expected_weights)
+    actual_weights = compute_training_weights(data, True)
+    expect(actual_weights).to.equal(expected_weights)
+    expect(sum(actual_weights)).to.equal(1.0)
