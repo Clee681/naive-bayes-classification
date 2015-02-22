@@ -100,3 +100,7 @@ class TwitterClassifier(object):
         nbc_model = self.train(training_set)
         accuracy = self.get_accuracy(nbc_model, test_set)
         print "Accuracy :{}".format(accuracy)
+
+
+if __name__ == "__main__":
+    TwitterClassifier().process()
