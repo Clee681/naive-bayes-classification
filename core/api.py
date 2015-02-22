@@ -6,6 +6,17 @@ from .matrix_utils import dot
 
 THRESHOLD = 0.8
 
+NEGATIVE_KEYWORDS = [
+    "bad", "hate", "suck", "fuck", "damn", "hell"
+]
+
+POSITIVE_KEYWORDS = ["good", "great", "awesome", "rock", "best", "love", "happy"]
+
+NEGATIVE_EMOJIS = [":(", ":'(", ":/", "=(", "='("]
+
+POSITIVE_EMOJIS = [":)", "=)", ":-D", "<3", "&lt;3"]
+
+
 class TwitterClassifier(object):
     source_filename = 'data/clean_twitter_data.csv'
 
@@ -19,7 +30,24 @@ class TwitterClassifier(object):
         to come up with the feature vector
         """
         return [
-            lambda text: "bad" in text.lower(),
+            lambda text: any([keyword in text.lower() for keyword in NEGATIVE_KEYWORDS]),
+            lambda text: any([keyword in text.lower() for keyword in POSITIVE_KEYWORDS]),
+            lambda text: "lol" in text.lower(),
+            lambda text: len(text) < 20,
+            lambda text: len(text) > 100,
+            lambda text: len(text) > 40,
+            lambda text: any([emoji in text.lower() for emoji in POSITIVE_EMOJIS]),
+            lambda text: any([emoji in text.lower() for emoji in NEGATIVE_EMOJIS]),
+            lambda text: "!" in text.lower(),
+            lambda text: "?" in text.lower(),
+            lambda text: text.count("!") > 3,
+            lambda text: any([word == word.upper() for word in text.split()]),
+            lambda text: text and text[0].upper() == "I",
+            lambda text: text.count(".") > 3,
+            lambda text: text.count("!") > 3,
+            lambda text: ".." in text,
+            lambda text: len([word for word in text.split() if word == word.upper()]) > 3,
+
         ]
 
     def get_feature_vector(self, row):
@@ -100,7 +128,3 @@ class TwitterClassifier(object):
         nbc_model = self.train(training_set)
         accuracy = self.get_accuracy(nbc_model, test_set)
         print "Accuracy :{}".format(accuracy)
-
-
-if __name__ == "__main__":
-    TwitterClassifier().process()
