@@ -38,3 +38,11 @@ def reverse_probability_given(data, class_label, feature_index):
         probability_given(data, class_label, feature_index) *
         probability_of_class(data, class_label)
     ) / (probability_of_feature(data, feature_index))
+
+
+def compute_training_weights(data, class_label):
+    feature_count = len(data[0][0])
+    return [
+        reverse_probability_given(data, class_label, i)
+        for i in range(feature_count)
+    ]

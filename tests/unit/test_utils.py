@@ -4,7 +4,9 @@ from core.probability_utils import (
     probability_of_feature,
     reverse_probability_given,
     probability_given,
+    compute_training_weights,
     probability_of_class)
+
 
 def test_dot_product():
     "Given two vectors, the dot product is calculated correctly"
@@ -66,3 +68,13 @@ def test_compute_conditional_probability():
     expect(reverse_probability_given(data, 1, True)).to.equal(0.0)
     expect(reverse_probability_given(data, 0, False)).to.equal(0.0)
     expect(reverse_probability_given(data, 1, False)).to.equal(1.0)
+
+def test_compute_training_weights():
+    data = [
+        [[1, 0], True],
+        [[0, 0], False],
+        [[0, 0], False],
+        [[0, 1], False]
+    ]
+    expected_weights = [1.0, 0.0]
+    expect(compute_training_weights(data, True)).to.equal(expected_weights)
